@@ -12,4 +12,17 @@ services:
         value: production
       - key: FLASK_APP
         value: app.py
-      
+      services:
+- type: web
+  name: mon_site_fastapi
+  runtime: python
+  repo: https://github.com/TonNomUtilisateur/mon_site_fastapi
+  plan: free
+  region: frankfurt
+  buildCommand: pip install -r requirements.txt
+  startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+  envVars:
+    - key: FASTAPI_ENV
+      value: production
+    - key: FASTAPI_APP
+      value: main:app
