@@ -1,5 +1,6 @@
-from flask import Flask
+import os
 import threading
+from flask import Flask
 import uvicorn
 from fastapi import FastAPI
 
@@ -19,18 +20,22 @@ def fastapi_home():
 
 # Fonction pour démarrer Flask
 def run_flask():
-    flask_app.run(host="0.0.0.0", port=5000)
+    port = os.environ.get("PORT", 5000)  # Utiliser le port dynamique de Render
+    flask_app.run(host="0.0.0.0", port=int(port))
 
 # Fonction pour démarrer FastAPI avec uvicorn
 def run_fastapi():
-    uvicorn.run(fastapi_app, host="127.0.0.1", port=10000)
+    port = os.environ.get("PORT", 10000)  # Utiliser le port dynamique de Render
+    uvicorn.run(fastapi_app, host="0.0.0.0", port=int(port))
 
 if __name__ == "__main__":
     # Démarre Flask dans un thread séparé
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
 
-    # Démarre FastAPI
-    run_fastapi()
+    # Démarre FastAPI dans un autre thread
+    fastapi_thread = threading.Thread(target=run_fastapi)
+    fastapi_thread.start()
 
     flask_thread.join()
+    fastapi_thread.join()
