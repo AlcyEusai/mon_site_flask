@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un article</title>
+</head>
+<body>
+    <h1>Publier un article</h1>
+    <form action="{{ url_for('ajouter_article') }}" method="POST">
+        <label>Titre :</label><br>
+        <input type="text" name="titre" required><br><br>
+        <label>Contenu :</label><br>
+        <textarea name="contenu" rows="6" cols="50" required></textarea><br><br>
+        <button type="submit">Publier</button>
+    </form>
+    <a href="{{ url_for('lister_articles') }}">Retour à l'accueil</a>
+</body>
+</html>
